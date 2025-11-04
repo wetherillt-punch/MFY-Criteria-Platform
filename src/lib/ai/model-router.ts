@@ -2,9 +2,12 @@ import OpenAI from 'openai';
 import { RegenerateRequest, RegenerateResponse, ProblemStatementSchema } from '@/types';
 import { lintProblemStatement } from '../lint';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization - only create client when needed at runtime
+function getOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
 
 const SYSTEM_PROMPT = `You generate healthcare audit Problem Statements in a strict 7-section JSON schema.
 
@@ -45,6 +48,7 @@ export async function regenerateProblemStatement(
     // Try GPT-5 first, fallback to GPT-4o
     let modelName = process.env.MODEL_NAME || 'gpt-5-turbo-preview';
     
+    const openai = getOpenAIClient();
     let completion;
     try {
       completion = await openai.chat.completions.create({
