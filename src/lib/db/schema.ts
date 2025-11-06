@@ -66,3 +66,4 @@ export type AiRun = typeof aiRun.$inferSelect;
 export type NewAiRun = typeof aiRun.$inferInsert;
 export type WebhookLog = typeof webhookLog.$inferSelect;
 export type NewWebhookLog = typeof webhookLog.$inferInsert;
+export { problemStatement } from './schema-problem-statements';
